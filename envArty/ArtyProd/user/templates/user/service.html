@@ -1,0 +1,159 @@
+{% include 'base.html' %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+<link rel="stylesheet" href="{% static 'css/custom.css' %}" /> <!-- Fichier CSS personnalisé -->
+
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<style>
+  .btn-outline-danger:hover {
+    background-color: white;
+    border-color: red;
+    color: white;
+  }
+  body {
+    background-color: #f1f1f1;
+  }
+  img{
+    height:200px
+  }
+</style>
+{% block content %}
+
+<div class="container my-5">
+  <form method="POST" class="post-form">
+    {% csrf_token %}
+    {% if user.is_superuser %}
+    <div class="row">
+      <div class="col-12 mb-3">
+        <button type="button" class="btn btn-primary">
+          <a href="{% url 'AddService' %}" class="text-white">Ajouter service</a>
+        </button>
+      </div>
+      {% for serv in Services %}
+      <div class="col-12 col-sm-6 col-md-4 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{ serv.type }}</h5>
+            <p class="card-text">{{ serv.description }}</p>
+       
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <button type="button" class="btn btn-sm btn-primary btn-popup" data-bs-toggle="modal" data-bs-target="#exampleModal{{ serv.id }}">
+                  Voir
+                </button>
+                <button type="button" class="btn btn-sm btn-secondary">
+                  <a href="{% url 'edit_Service' serv.id%}" class="text-secondary">Modifier</a>
+                </button>
+                
+                <button type="button" class="btn btn-sm btn-outline btn-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal{{ serv.id }}">
+                  Supprimer
+                </button>
+               
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal{{ serv.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Détails du service</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <h5>{{ serv.type }}</h5>
+              <p>{{ serv.description }}</p>
+              {% for projet in serv.projet_set.all %}
+                <div class="col-12 col-sm-6 col-md-4 mb-4">
+                  <div>
+                    <div id="{{projet.id}}" style="width: 18rem">
+                      <img src="/media/{{projet.img_projet}}" style="width: 250px" />
+                      <div class="card-body">
+                        <h5 class="card-title">{{ projet.libellai }}</h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% empty %}
+                <li>Aucun projet disponible.</li>
+              {% endfor %}
+            </div>
+            
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="deleteConfirmationModal{{ serv.id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ serv.id }}" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="deleteModalLabel{{ serv.id }}">Supprimer l'article</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p>Êtes-vous sûr de vouloir supprimer l'article "{{ serv.type }}" ?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+              <form method="POST" action="{% url 'service_det' serv.id  %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Supprimer</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      {% else %}
+      <div class="row">
+        <div class="col-12 mb-3">
+          
+        </div>
+        {% for serv in Services %}
+        <div class="col-12 col-sm-6 col-md-4 mb-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">{{ serv.type }}</h5>
+              <p class="card-text">{{ serv.description }}</p>
+         
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-primary btn-popup" data-bs-toggle="modal" data-bs-target="#exampleModal{{ serv.id }}">
+                    Voir
+                  </button>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal{{ serv.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Détails du service</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <h5>{{ serv.type }}</h5>
+                <p>{{ serv.description }}</p>
+                <!-- Ajoutez d'autres informations sur le service ici -->
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+  </form>
+</div>
+{% endblock %}
+

@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <style>
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f2f2f2;
+      border-radius: 10px;
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .col-md-6 {
+      width: 50%;
+      padding: 10px;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.3);
+    }
+
+    h2 {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 16px;
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+
+    strong {
+      font-weight: bold;
+    }
+
+    form {
+      display: inline-block;
+      margin-top: 10px;
+    }
+  </style>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <div class="container">
+    <div class="row">
+      
+      <div class="col-md-6">
+        <img src="/media/{{Projet.img_projet}}" style="width: 250px" />
+
+        <h2>{{Projet.libellai }}</h2>
+        <h2>{{Projet.description }}</h2>
+       
+        
+        {% csrf_token %}
+         </form>
+      </div>
+    </div>
+  </div>
+
+  <link rel="stylesheet" type="text/css" href="nom_de_la_feuille_de_style.css">
+{% endblock %}
+

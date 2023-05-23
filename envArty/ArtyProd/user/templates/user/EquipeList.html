@@ -1,0 +1,170 @@
+{% include 'base.html' %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+<link rel="stylesheet" href="{% static 'css/custom.css' %}" /> <!-- Fichier CSS personnalisé -->
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<style>
+  .btn-outline-danger:hover {
+    background-color: white;
+    border-color: red;
+    color: white;
+  }
+  body {
+    background-color: #f1f1f1;
+  }
+  img{
+    height:200px
+  }
+  .service-card {
+    width: 300px;
+    height: 150px;}
+    .btnnn{
+      margin-button:0px;
+    }
+</style>
+{% block content %}
+
+<div class="container my-5">
+  <form method="POST" enctype="multipart/form-data" class="post-form">
+    {% csrf_token %}
+    {% if user.is_superuser %}
+    <div class="row">
+      <div class="col-12 mb-3">
+        <button type="button" class="btn btn-primary">
+          <a href="{% url 'equipe_create' %}" class="text-white">Ajouter Projet</a>
+        </button>
+      </div>
+    {% for team in Equipes %}
+
+    <div class="col-12 col-sm-6 col-md-4 mb-4">
+      <div class="col ">
+        <div class="card shadow-sm service-card">
+            <figcaption class="figure-caption"> 
+              <h5>{{ team.nom }}</h5>
+            </figcaption>
+            <ul>
+              {% for personnel in team.personnels.all %}
+                  <li>{{ personnel.nom }}</li>
+              {% endfor %}
+          </ul>
+                <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group ">
+                <button type="button" class="btn btn-sm btn-primary " data-bs-toggle="modal" data-bs-target="#exampleModal{{ team.id }}">
+                  Voir
+                </button>
+             
+                <button type="button" class="btn btn-sm btn-secondary">
+                  <a href="{% url 'edit_team' team.id  %}" class="text-white">Modifier</a>
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{  team.id }}">
+                  Supprimer
+                </button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal{{ team.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Détails du projet</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <h5>{{ team.nom }}</h5>
+                 <ul>
+              {% for personnel in team.personnels.all %}
+                  <li>{{ personnel.nom }}</li>
+              {% endfor %}
+          </ul>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal de confirmation de suppression -->
+<div class="modal fade" id="deleteModal{{ team.id }}" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirmation de suppression</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Êtes-vous sûr de vouloir supprimer ce projet ?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <form method="POST" action="{% url 'delete_team' team.id %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger">Supprimer</button>
+        </form></div>
+    </div>
+  </div>
+</div>
+
+
+
+      {% endfor %}
+      {% else %}
+      <div class="row">
+        {% for team in Equipes %}
+
+     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+      <div class="col ">
+        <div class="card shadow-sm">
+            <figcaption class="figure-caption"> 
+              <h5>{{ team.nom }}</h5>
+            </figcaption>
+            <ul>
+              {% for personnel in team.personnels.all %}
+                  <li>{{ personnel.nom }}</li>
+              {% endfor %}
+          </ul>
+                <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal{{ team.id }}">
+                  Voir
+                </button>
+             
+                <button type="button" class="btn btn-sm btn-secondary">
+                  <a href="#" class="text-white">Modifier</a>
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{  team.id }}">
+                  Supprimer
+                </button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal{{ team.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Détails du projet</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                 <h5>{{ team.nom }}</h5>
+                 <ul>
+              {% for personnel in team.personnels.all %}
+                  <li>{{ personnel.nom }}</li>
+              {% endfor %}
+          </ul>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+  </form>
+</div>
+{% endblock %}    

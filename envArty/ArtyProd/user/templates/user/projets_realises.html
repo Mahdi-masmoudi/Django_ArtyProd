@@ -1,0 +1,25 @@
+{% include 'base.html' %}
+ {% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+<link rel="stylesheet" href="{% static 'css/custom.css' %}" /> <!-- Fichier CSS personnalisé -->
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<div class="container my-5">
+    
+      {% csrf_token %}
+      <!-- projets_realises.html -->
+<!-- mes_projets.html -->
+<!-- mes_projets.html -->
+<h1>Mes projets</h1>
+{% for projet_utilisateur in mes_projets %}
+  <p>{{ projet_utilisateur.projet.libellai }} - {% if projet_utilisateur.en_cours %}En cours{% else %}Terminé{% endif %}</p>
+  <!-- Afficher d'autres détails du projet de l'utilisateur -->
+{% empty %}
+  <p>Aucun projet en cours.</p>
+{% endfor %}
+
+
+
+     
+  </div>
+  {% endblock %}

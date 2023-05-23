@@ -1,0 +1,161 @@
+{% include 'base.html' %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+<link rel="stylesheet" href="{% static 'css/custom.css' %}" /> <!-- Fichier CSS personnalisé -->
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<style>
+  .btn-outline-danger:hover {
+    background-color: white;
+    border-color: red;
+    color: white;
+  }
+  body {
+    background-color: #f1f1f1;
+  }
+  img{
+    height:200px
+  }
+  
+    body {
+      background-image: url("{% static 'css/image4' %}");
+      background-size: cover; /* Ajuster la taille de l'image pour couvrir tout le corps */
+      background-position: center; /* Centrer l'image horizontalement et verticalement */
+    }
+ 
+</style>
+{% block content %}
+
+<div class="container my-5">
+  <form method="POST" enctype="multipart/form-data" class="post-form">
+    {% csrf_token %}
+    {% if user.is_superuser %}
+    <div class="row">
+      <div class="col-12 mb-3">
+        <button type="button" class="btn btn-primary">
+          <a href="{% url 'AddProjet' %}" class="text-white">Ajouter Projet</a>
+        </button>
+      </div>
+      {% for Proj in projets %}
+      <div class="col-12 col-sm-6 col-md-4 mb-4">
+        <div>
+          <div id="{{Proj.id}}" class="card"> <!-- Ajout de la classe "card" -->
+            <img src="/media/{{Proj.img_projet}}" class="card-img-top custom-img" /> <!-- Ajout de la classe "custom-img" -->
+
+            <div class="card-body">
+              <h5 class="card-title">{{ Proj.libellai }}</h5>
+              <p class="card-text">{{ Proj.description }}</p>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+               
+                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal{{ Proj.id }}">
+                  Voir
+                </button>
+              
+                <button type="button" class="btn btn-sm btn-secondary">
+                  <a href="{% url 'edit_Projet' Proj.id  %}" class="text-white">Modifier</a>
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{  Proj.id }}">
+                  Supprimer
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal{{ Proj.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Détails du projet</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <img src="/media/{{Proj.img_projet}}" class="card-img-top custom-img" /> <!-- Ajout de la classe "custom-img" -->
+              <h5>{{ Proj.libellai }}</h5>
+              <p>{{ Proj.description }}</p>
+              <p>{{ Proj.date }}</p>
+              <p>{{ Proj.lieu }}</p>
+              <p>{{ Proj.duree }}</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal de confirmation de suppression -->
+<div class="modal fade" id="deleteModal{{ Proj.id }}" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirmation de suppression</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Êtes-vous sûr de vouloir supprimer ce projet ?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <form method="POST" action="{% url 'deleteProjet' Proj.id %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger">Supprimer</button>
+        </form></div>
+    </div>
+  </div>
+</div>
+
+
+
+      {% endfor %}
+      {% else %}
+      <div class="row">
+        {% for Proj in projets %}
+        <div class="col-12 col-sm-6 col-md-4 mb-4">
+          <div>
+            <div id="{{Proj.id}}" class="card"> <!-- Ajout de la classe "card" -->
+              <img src="/media/{{Proj.img_projet}}" class="card-img-top custom-img" /> <!-- Ajout de la classe "custom-img" -->
+    
+              <div class="card-body">
+                <h5 class="card-title">{{ Proj.libellai }}</h5>
+                <p class="card-text">{{ Proj.description }}</p>
+              </div>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-popup" data-bs-toggle="modal" data-bs-target="#exampleModal{{ Proj.id }}">
+                    Voir
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal{{ Proj.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Détails du projet</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <img src="/media/{{Proj.img_projet}}" class="card-img-top custom-img" /> <!-- Ajout de la classe "custom-img" -->
+                <h5>{{ Proj.libellai }}</h5>
+                <p>{{ Proj.description }}</p>
+                <p>{{ Proj.date }}</p>
+                <p>{{ Proj.lieu }}</p>
+                <p>{{ Proj.duree }}</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+  </form>
+</div>
+{% endblock %}    

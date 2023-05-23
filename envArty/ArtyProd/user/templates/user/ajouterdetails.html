@@ -1,0 +1,22 @@
+{% include 'base.html' %} {% block content %}
+{% load static %}
+<style>
+  body {
+    background-image: url("{% static 'css/image4.png' %}");
+    background-size: cover; /* Ajuster la taille de l'image pour couvrir tout le corps */
+    background-position: center; /* Centrer l'image horizontalement et verticalement */
+  }</style>
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+<link rel="stylesheet" href="{% static 'css/custom.css' %}" /> <!-- Fichier CSS personnalisé -->
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<div class="container my-5">
+    <h2 class="text-center my-4">Ajouter des détails</h2>
+    <form method="POST" class="post-form">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <div class="text-center mt-4">
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+      </div>
+    </form>
+  </div>
+  {% endblock %}

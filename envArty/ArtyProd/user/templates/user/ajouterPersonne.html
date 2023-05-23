@@ -1,0 +1,60 @@
+{% include 'base.html' %} {% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+<link rel="stylesheet" href="{% static 'css/custom.css' %}" /> <!-- Fichier CSS personnalisé -->
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<style>
+  .post-form {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .post-form input[type="text"],
+  .post-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+
+  .post-form input[type="text"]:focus,
+  .post-form textarea:focus {
+    outline: none;
+    border: 2px solid #4caf50;
+  }
+
+  .post-form label {
+    font-weight: bold;
+  }
+
+  .post-form button[type="submit"] {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #4caf50;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+  }
+
+  .post-form button[type="submit"]:hover {
+    background-color: #2e8b57;
+    cursor: pointer;
+  }
+</style>
+
+<div class="container">
+  <h2 class="text-center">Ajouter un service</h2>
+  <form method="POST" class="post-form form-horizontal" enctype="multipart/form-data">
+    {% csrf_token %} {{ form.as_p }}
+   
+
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
+  </form>
+</div>
+
+{% endblock %}

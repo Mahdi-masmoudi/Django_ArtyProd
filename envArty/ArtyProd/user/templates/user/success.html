@@ -1,0 +1,12 @@
+{% include 'base.html' %} {% load static %}
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+<link rel="stylesheet" href="{% static 'css/custom.css' %}" />
+<!-- Fichier CSS personnalisé -->
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+{% block content %}
+<div class="container">
+  <h1>Message Sent</h1>
+  <p>Your message has been sent successfully.</p>
+</div>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% comment %} {% include 'user/base.html' %} {% load static %}
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+{% block content %}
+
+<div class="container my-5">
+  <form method="POST" class="post-form">
+    {% csrf_token %}
+    {% if user.is_superuser %}
+    <div class="row">
+      <div class="col-12 mb-3">
+        <button type="button" class="btn btn-primary">
+          <a href="#" class="text-white">Ajouter un article</a>
+        </button>
+      </div>
+      {% for Proj in projets %}
+      <div class="col-12 col-sm-6 col-md-4 mb-4">
+       
+          <div class="card-body">
+            <h5 class="card-title">{{ Proj.libellai }}</h5>
+            <p class="card-text">{{ Proj.description }}</p>
+       
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <button type="button" class="btn btn-sm btn-popup">
+                  <a
+                    href="#"
+                    class="text-primary"
+                    >Voir</a
+                  >
+                </button>
+
+                <button type="button" class="btn btn-sm">
+                  <a
+                    href="#"
+                    class="text-secondary"
+                    >Modifier</a
+                  >
+                </button>
+                <button type="button" class="btn btn-sm btn-outline">
+                  <a href="#" class="text-danger"
+                    >Supprimer</a
+                  >
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </form>
+</div>
+{% endblock %} {% endcomment %}

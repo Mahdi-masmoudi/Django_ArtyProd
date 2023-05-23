@@ -1,0 +1,110 @@
+{% include 'base.html' %} {% load static %}
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+<link rel="stylesheet" href="{% static 'css/custom.css' %}" />
+<!-- Fichier CSS personnalisé -->
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<style>
+  body {
+    background-image: url("{% static 'css/image4.png' %}");
+    background-size: cover; /* Ajuster la taille de l'image pour couvrir tout le corps */
+    background-position: center; /* Centrer l'image horizontalement et verticalement */
+  }
+  .btn-outline-danger:hover {
+    background-color: white;
+    border-color: red;
+    color: white;
+  }
+  body {
+    background-color: #f1f1f1;
+  }
+  img {
+    height: 200px;
+  }
+</style>
+{% block content %}
+<div class="container">
+  <h1>Contactez-nous</h1>
+  <div class="row">
+    <div class="col-md-6">
+      <form action="{% url 'contact_form' %}" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="name">Nom</label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            name="name"
+            placeholder="Entrez votre nom"
+          />
+        </div>
+        <div class="form-group">
+          <label for="email">Adresse e-mail</label>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            name="email"
+            placeholder="Entrez votre adresse e-mail"
+          />
+        </div>
+        <div class="form-group">
+          <label for="subject">Sujet</label>
+          <input
+            type="text"
+            class="form-control"
+            id="subject"
+            name="subject"
+            placeholder="Entrez le sujet de votre message"
+          />
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea
+            class="form-control"
+            id="message"
+            name="message"
+            rows="5"
+          ></textarea>
+        </div>
+        <br />
+
+        <button type="submit" class="btn btn-primary">
+          <a href="{% url 'success' %}"></a>Envoyer
+        </button>
+        <br />
+        <br />
+      </form>
+    </div>
+
+    <div class="col-md-6">
+      <br />
+      <br />
+      <br />
+      <h4>Informations de contact</h4>
+      <p><i class="fa fa-map-marker"></i> route mahdia km 6</p>
+      <p><i class="fa fa-phone"></i> 95464707/26716144</p>
+      <p><i class="fa fa-envelope"></i> mahdi@gmail.com</p>
+    </div>
+    <br />
+    <br /><br />
+    <br />
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3277.9355989712694!2d10.769580075326868!3d34.757215080178995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1301d2c1f3c2991f%3A0xab7f8817c80e9617!2sISET%20Sfax!5e0!3m2!1sfr!2stn!4v1684169906521!5m2!1sfr!2stn"
+      width="600"
+      height="450"
+      style="border: 0"
+      allowfullscreen=""
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      width="100%"
+      height="200"
+      frameborder="0"
+      style="border: 0"
+      allowfullscreen=""
+      aria-hidden="false"
+      tabindex="0"
+    ></iframe>
+  </div>
+</div>
+{% endblock content %}

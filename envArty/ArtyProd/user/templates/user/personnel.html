@@ -1,0 +1,112 @@
+{% include 'base.html' %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+<link rel="stylesheet" href="{% static 'css/custom.css' %}" /> <!-- Fichier CSS personnalisé -->
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<style>
+  .btn-outline-danger:hover {
+    background-color: white;
+    border-color: red;
+    color: white;
+  }
+  body {
+    background-color: #f1f1f1;
+  }
+  img{
+    height:200px
+  }
+ 
+    body {
+      background-image: url("{% static 'css/image4.png' %}");
+      background-size: cover; /* Ajuster la taille de l'image pour couvrir tout le corps */
+      background-position: center; /* Centrer l'image horizontalement et verticalement */
+    }
+  
+</style>
+{% block content %}
+<div class="container my-5">
+  <form method="POST" enctype="multipart/form-data" class="post-form">
+    {% csrf_token %}
+    {% if user.is_superuser %}
+    <div class="row">
+      <div class="col-12 mb-3">
+        <button type="button" class="btn btn-primary">
+          <a href="{% url 'personnel_create' %}" class="text-white">Ajouter Personnel</a>
+        </button>
+      </div>
+    </div>
+    {% endif %}
+    <div class="row">
+      <div class="container">
+        {% for per in listp %}
+        <div class="col-12 col-sm-6 col-md-4 mb-4">
+          <div id="{{per.id}}" class="card"> <!-- Ajout de la classe "card" -->
+            <img src="/media/{{per.ficher_photo}}" class="card-img-top custom-img" /> <!-- Ajout de la classe "custom-img" -->
+            <div class="card-body">
+              <h5 class="card-title">{{ per.nom }}</h5>
+              <p class="card-text">{{ per.ficher_CV }}</p>
+            </div>
+            
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal{{ per.id }}">
+                  Voir
+                </button>
+                <button type="button" class="btn btn-sm btn-secondary">
+                  <a href="{% url 'Updateper' per.id %}" class="text-white">Modifier</a>
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ per.id }}">
+                  Supprimer
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal{{ per.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Détails</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <img src="/media/{{per.ficher_photo}}" class="card-img-top custom-img" /> <!-- Ajout de la classe "custom-img" -->
+                <div class="card-body">
+                  <h5 class="card-title">{{ per.nom }}</h5>
+                  <p class="card-text">{{ per.ficher_CV }}</p>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Modal de confirmation de suppression -->
+        <div class="modal fade" id="deleteModal{{ per.id }}" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirmation de suppression</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <p>Êtes-vous sûr de vouloir supprimer ce projet ?</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <form method="POST" action="{% url 'personnel_delete' per.id %}">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-danger">Supprimer</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liste des projets utilisateurs</title>
+</head>
+<body>
+    <h1>Liste des projets utilisateurs</h1>
+    <ul>
+        {% for projet in projets %}
+        <li>
+            {{ projet.libellai }} - {{ projet.date_fin }} - {{ projet.utilisateur.username }}
+        </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'ajouter_projet_utilisateur' %}">Ajouter un projet utilisateur</a>
+</body>
+</html>
